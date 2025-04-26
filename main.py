@@ -1,6 +1,7 @@
 from openai import OpenAI
 from dotenv import load_dotenv  
 import os
+from prompt import prompt
 
 load_dotenv()
 
@@ -10,21 +11,12 @@ client = OpenAI(
 )
 
 def answer_question(context: str, question: str) -> str:
-
-    prompt = """
-    Контекст: {context}
-
-    Ответь на вопрос пользователя, используя только контекст. 
-    Ответ должен содержать только 1 непрерывный отрывок из контекста.
-    """
-
-    response = client.chat.completions.create(
+    response = client.completions.create(
         model=os.getenv("MODEL"),
-        messages=[
-            {"role": "system", "content": prompt.format(context=context)},
-            {"role": "user", "content": question}
-        ],
-        temperature=0
+        prompt=prompt.format(context=context, question=question),
+        temperature=0,
+        max_tokens=64,
+        stop=["Контекст"]
     )
 
-    return response.choices[0].message.content
+    return response.choices[0].text
