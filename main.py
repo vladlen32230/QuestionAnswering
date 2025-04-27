@@ -11,12 +11,13 @@ client = OpenAI(
 )
 
 def answer_question(context: str, question: str) -> str:
-    response = client.completions.create(
+    response = client.chat.completions.create(
         model=os.getenv("MODEL"),
-        prompt=prompt.format(context=context, question=question),
+        messages=[
+            {'role': 'user', 'content': prompt.format(context=context, question=question)}
+        ],
         temperature=0,
         max_tokens=64,
-        stop=["Контекст"]
     )
 
-    return response.choices[0].text
+    return response.choices[0].message.content
