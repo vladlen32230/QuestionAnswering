@@ -4,6 +4,7 @@ from dotenv import load_dotenv
 import pandas as pd
 from prompt import prompt
 import asyncio
+import re
 
 load_dotenv()
 
@@ -33,11 +34,12 @@ async def main():
                 {'role': 'user', 'content': prompt.format(context=context, question=question)}
             ],
             temperature=0,
-            max_tokens=64
+            max_tokens=1024
         ))
 
     responses = await asyncio.gather(*requests)
     responses = [response.choices[0].message.content for response in responses]
+    responses = [re.sub(r"<think>.*?</think>", "", response, flags=re.DOTALL) for response in responses]
     print("Received responses")
 
     right, wrong = 0, 0

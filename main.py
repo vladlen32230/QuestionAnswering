@@ -2,6 +2,7 @@ from openai import OpenAI
 from dotenv import load_dotenv  
 import os
 from prompt import prompt
+import re
 
 load_dotenv()
 
@@ -17,7 +18,9 @@ def answer_question(context: str, question: str) -> str:
             {'role': 'user', 'content': prompt.format(context=context, question=question)}
         ],
         temperature=0,
-        max_tokens=64,
+        max_tokens=1024,
     )
 
-    return response.choices[0].message.content
+    answer = response.choices[0].message.content
+    answer = re.sub(r"<think>.*?</think>", "", answer, flags=re.DOTALL)
+    return answer
