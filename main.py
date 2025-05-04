@@ -11,9 +11,9 @@ client = OpenAI(
     base_url=os.getenv("BASE_URL")
 )
 
-def answer_question(context: str, question: str) -> str:
+def answer_question(context: str, question: str, model_name: str) -> str:
     response = client.chat.completions.create(
-        model=os.getenv("MODEL"),
+        model=model_name,
         messages=[
             {'role': 'user', 'content': prompt.format(context=context, question=question)}
         ],
