@@ -5,7 +5,7 @@ from prompt import prompt # Assuming prompt.py exists and contains the 'prompt' 
 # Define the available models with descriptions
 AVAILABLE_MODELS_WITH_DESC = {
     "qwen3:0.6b-q8_0 (Accuracy: 80%)": "qwen3:0.6b-q8_0",
-    "qwen3:4b-q8_0 (Accuracy: 98%, 8x slower)": "qwen3:4b-q8_0",
+    "qwen3:4b-q8_0 (Accuracy: 98%, 4x slower)": "qwen3:4b-q8_0",
 }
 
 st.title("Question Answering with Selectable Model")
